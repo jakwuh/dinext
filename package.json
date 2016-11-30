@@ -1,0 +1,26 @@
+{
+  "name": "di2.js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --compilers js:babel-core/register ./test/index.js",
+    "es5": "babel --out-dir dist/ --source-maps --presets es2015 ./src"
+  },
+  "author": "jakwuh <jakwuh@yandex-team.ru>",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-plugin-transform-flow-strip-types": "^6.18.0",
+    "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-es2017": "^6.16.0",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "flow-bin": "^0.36.0",
+    "mocha": "^3.2.0"
+  },
+  "dependencies": {
+    "babel-core": "^6.18.2"
+  }
+}
