@@ -1,11 +1,11 @@
 {
   "name": "di2.js",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "mocha --compilers js:babel-core/register ./test/index.js",
-    "es5": "babel --out-dir dist/ --source-maps --presets es2015 ./src"
+    "build": "babel --out-dir dist/ --source-maps ./src",
+    "watch": "babel --out-dir dist/ --source-maps -w ./src"
   },
   "author": "jakwuh <jakwuh@yandex-team.ru>",
   "license": "ISC",
@@ -22,5 +22,9 @@
   },
   "dependencies": {
     "babel-core": "^6.18.2"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "description": ""
 }

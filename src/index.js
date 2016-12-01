@@ -77,7 +77,8 @@ class Container {
         } else if (token instanceof Definition) {
             return token;
         } else {
-            let definition = new Definition(token);
+            let provider = isFunction(token.factory) ? token.factory : token; // todo why should we do this?
+            let definition = new Definition(provider, undefined, token.dependencies, token.annotations);
             this.definitions.set(token, definition);
             return definition;
         }
@@ -121,17 +122,17 @@ class Container {
         }
     }
 
-    get(token: Token): Promise<Instance> | Instance {
+    get(token: Token, options?: Object): Promise<Instance> | Instance {
         let instance, definition = this.normalizeToken(token);
 
         if (this.instances.has(definition)) {
             return this.instances.get(definition);
         } else if (instance = this.getFromCache(definition)) {
-            let instance = this.updateInstance(instance, definition);
-            this.maybeCacheInstance(instance, definition);
-            return instance;
+            let promiseOrInstance = this.updateInstance(instance, definition);
+            this.maybeCacheInstance(promiseOrInstance, definition);
+            return promiseOrInstance;
         } else {
-            let promiseOrInstance = this.createInstance(definition, this.getProvider(definition));
+            let promiseOrInstance = this.createInstance(definition, options);
             this.maybeCacheInstance(promiseOrInstance, definition);
             return promiseOrInstance;
         }
@@ -143,9 +144,10 @@ class Container {
         }
     }
 
-    createInstance(definition: Definition, provider: Function): Promise<Instance> | Instance {
+    createInstance(definition: Definition, options?: Object = {}): Promise<Instance> | Instance {
         return then(this.loadDependencies(definition.dependencies), (dependencies) => {
-            let instance = provider(dependencies);
+            let provider = this.getProvider(definition);
+            let instance = provider(Object.assign({}, dependencies, options));
             this.maybeCacheInstance(instance, definition);
             return this.updateInstanceDependencies(instance, definition, dependencies);
         });

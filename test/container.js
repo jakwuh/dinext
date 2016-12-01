@@ -58,19 +58,19 @@ describe('Container', function () {
             let notTransientInstance1 = container.get(notTransientDefinition);
             let notTransientInstance2 = container.get(notTransientDefinition);
 
-            expect(notTransientInstance1).to.eql(notTransientInstance2);
+            expect(notTransientInstance1).to.equal(notTransientInstance2);
 
             let transientInstance1 = container.get(transientDefinition);
             let transientInstance2 = container.get(transientDefinition);
 
-            expect(transientInstance1).not.to.eql(transientInstance2);
+            expect(transientInstance1).not.to.equal(transientInstance2);
         });
     });
 
     describe('session', function () {
-        it('stores needed instances / destroy unused instances', function () {
-            let tokenA = Foo;
-            let tokenB = Bar;
+        it('stores needed / destroy unused instances', function () {
+            let tokenA = new Definition(Foo);
+            let tokenB = new Definition(Bar);
             let tokenC = new Definition(Foo.factory);
             let tokenD = new Definition(Bar);
 
@@ -80,14 +80,16 @@ describe('Container', function () {
             container.get(tokenD);
 
             let nextContainer = container.createSession();
+
             nextContainer.get(tokenA);
             nextContainer.get(tokenC);
+
             nextContainer.closeSession();
 
-            expect(nextContainer.instances.has(tokenA)).to.be.true();
-            expect(nextContainer.instances.has(tokenB)).to.be.false();
-            expect(nextContainer.instances.has(tokenC)).to.be.true();
-            expect(nextContainer.instances.has(tokenD)).to.be.false();
+            expect(nextContainer.instances.has(tokenA)).to.be.true;
+            expect(nextContainer.instances.has(tokenB)).to.be.false;
+            expect(nextContainer.instances.has(tokenC)).to.be.true;
+            expect(nextContainer.instances.has(tokenD)).to.be.false;
         })
     });
 
