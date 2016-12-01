@@ -1,6 +1,6 @@
 {
-  "name": "di2.js",
-  "version": "1.0.0",
+  "name": "dinext",
+  "version": "0.0.0",
   "main": "dist/index.js",
   "scripts": {
     "test": "mocha --compilers js:babel-core/register ./test/index.js",
